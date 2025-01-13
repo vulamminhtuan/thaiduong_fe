@@ -1,6 +1,6 @@
 import axios from 'axios';
 const api = axios.create({
-    baseURL: '${process.env.BACKEND_URL}', // URL của backend Spring Boot
+    baseURL: `${process.env.BACKEND_URL}`, // URL của backend Spring Boot
     headers: {
       'Content-Type': 'application/json',
     },
