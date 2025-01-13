@@ -118,7 +118,7 @@ function AdminApplications() {
                   <td className="px-4 py-3">
                     {app.resumeUrl ? (
                       <a
-                        href={`${process.env.BACKEND_URL}/api/files/${app.resumeUrl
+                        href={`https://thaiduong-be.onrender.com/api/files/${app.resumeUrl
                           .split("\\")
                           .pop()}`}
                         target="_blank"

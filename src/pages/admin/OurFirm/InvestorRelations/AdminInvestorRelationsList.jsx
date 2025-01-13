@@ -87,7 +87,7 @@ function AdminInvestorRelationsList() {
                           src={
                             item.imageUrl.startsWith("http")
                               ? item.imageUrl
-                              : `${process.env.BACKEND_URL}/api/images/${item.imageUrl}`
+                              : `https://thaiduong-be.onrender.com/api/images/${item.imageUrl}`
                           }
                           alt={item.title}
                         
@@ -100,7 +100,7 @@ function AdminInvestorRelationsList() {
               <td className="py-2 px-4 border-b">
                 {item.link ? (
                     <a
-                    href={`${process.env.BACKEND_URL}/api/files/${item.link
+                    href={`https://thaiduong-be.onrender.com/api/files/${item.link
                           .split("\\")
                           .pop()}`}
                     target="_blank"

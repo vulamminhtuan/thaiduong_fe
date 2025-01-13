@@ -169,7 +169,7 @@ const Resources = () => {
                             src={
                               article.imageUrl.startsWith("http")
                               ? article.imageUrl
-                              : `${process.env.BACKEND_URL}/api/images/${article.imageUrl}`
+                              : `https://thaiduong-be.onrender.com/api/images/${article.imageUrl}`
                           }
                             alt={article.title}
                             className="w-full h-48 object-cover rounded-t-lg mb-4"

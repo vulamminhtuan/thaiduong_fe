@@ -178,7 +178,7 @@ const handleEdit = (item) => {
     setImagePreview(
       item.imageUrl.startsWith("http")
         ? item.imageUrl
-        : `${process.env.BACKEND_URL}/api/images/${item.imageUrl}`
+        : `https://thaiduong-be.onrender.com/api/images/${item.imageUrl}`
     );
   } else {
     setImagePreview(null); 
@@ -394,7 +394,7 @@ const handleEdit = (item) => {
                           src={
                             item.imageUrl.startsWith("http")
                               ? item.imageUrl
-                              : `${process.env.BACKEND_URL}/api/images/${item.imageUrl}`
+                              : `https://thaiduong-be.onrender.com/api/images/${item.imageUrl}`
                           }
                           alt={item.title}
                         

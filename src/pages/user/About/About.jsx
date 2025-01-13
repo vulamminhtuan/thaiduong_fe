@@ -157,7 +157,7 @@ function About() {
                           src={
                             ct.imageUrl.startsWith("http")
                               ? ct.imageUrl
-                              : `${process.env.BACKEND_URL}/api/images/${ct.imageUrl}`
+                              : `https://thaiduong-be.onrender.com/api/images/${ct.imageUrl}`
                           }
                           alt={getTitle(ct)}
                           className="w-24 h-24 object-cover mr-4 rounded-md"

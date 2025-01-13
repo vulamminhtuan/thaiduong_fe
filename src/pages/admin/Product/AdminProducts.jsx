@@ -111,7 +111,7 @@ function AdminProducts() {
     if (item.imageURL) {
       const imageUrl = item.imageURL.startsWith("https") 
         ? item.imageURL 
-        : `${process.env.BACKEND_URL}/api/images/${item.imageURL}`;
+        : `https://thaiduong-be.onrender.com/api/images/${item.imageURL}`;
       setImagePreview(imageUrl);
     }
   };

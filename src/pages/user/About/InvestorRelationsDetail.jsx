@@ -65,7 +65,7 @@ function InvestorRelationsDetail() {
       {detailData.link ? (
         <p className="text-blue-600 underline mb-4">
           <a
-            href={`${process.env.BACKEND_URL}/api/files/${detailData.link
+            href={`https://thaiduong-be.onrender.com/api/files/${detailData.link
                           .split("\\")
                           .pop()}`}
             target="_blank"
@@ -85,7 +85,7 @@ function InvestorRelationsDetail() {
           src={
             detailData.imageUrl.startsWith("http")
           ? detailData.imageUrl
-          : `${process.env.BACKEND_URL}/api/images/${detailData.imageUrl}`
+          : `https://thaiduong-be.onrender.com/api/images/${detailData.imageUrl}`
           }
           alt={getTitle(detailData)}
           className="w-64 h-64 object-cover mr-6 rounded-md"

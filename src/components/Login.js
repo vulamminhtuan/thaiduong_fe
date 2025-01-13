@@ -6,7 +6,7 @@ import { Link,useNavigate } from 'react-router-dom';
 import { AuthContext } from "./AuthContext";
 import { jwtDecode } from "jwt-decode";
 import { useTranslation } from "react-i18next";
-
+import axios from "axios"
 
 
 const Login = () => {
@@ -24,7 +24,8 @@ const Login = () => {
     }),
     onSubmit: async (values, { setSubmitting, setFieldError }) => {
       try {
-        const response = await api.post('/auth/login', values);
+        const response = await api.post(`/auth/login`, values);
+
 
         const { jwt } = response.data;
         localStorage.setItem('jwt', jwt); 
