@@ -65,7 +65,7 @@ function Contact() {
       });
 
       if (response.status === 201) {
-        setSuccessMessage('Tin nhắn của bạn đã được gửi thành công!');
+        setSuccessMessage(t('mi 27'));
         setFormData({
           name: '',
           email: '',
@@ -121,7 +121,7 @@ function Contact() {
                 className={`block w-full px-4 py-2 mt-1 border rounded-md shadow-sm ${
                   errors.name ? 'border-red-500' : 'border-gray-300'
                 }`}
-                required
+                
               />
               {errors.name && (
                 <p className='text-red-500 text-sm mt-1'>{errors.name}</p>
@@ -144,7 +144,7 @@ function Contact() {
                 className={`block w-full px-4 py-2 mt-1 border rounded-md shadow-sm ${
                   errors.cellPhone ? 'border-red-500' : 'border-gray-300'
                 }`}
-                required
+                
               />
               {errors.cellPhone && (
                 <p className='text-red-500 text-sm mt-1'>{errors.cellPhone}</p>
@@ -167,7 +167,6 @@ function Contact() {
                 className={`block w-full px-4 py-2 mt-1 border rounded-md shadow-sm ${
                   errors.homePhone ? 'border-red-500' : 'border-gray-300'
                 }`}
-                required
               />
               {errors.homePhone && (
                 <p className='text-red-500 text-sm mt-1'>{errors.homePhone}</p>
@@ -190,7 +189,6 @@ function Contact() {
                 className={`block w-full px-4 py-2 mt-1 border rounded-md shadow-sm ${
                   errors.email ? 'border-red-500' : 'border-gray-300'
                 }`}
-                required
               />
               {errors.email && (
                 <p className='text-red-500 text-sm mt-1'>{errors.email}</p>
@@ -213,7 +211,6 @@ function Contact() {
                 className={`block w-full px-4 py-2 mt-1 border rounded-md shadow-sm ${
                   errors.message ? 'border-red-500' : 'border-gray-300'
                 }`}
-                required
               />
               {errors.message && (
                 <p className='text-red-500 text-sm mt-1'>{errors.message}</p>

@@ -90,10 +90,10 @@ function Home() {
         <div className="container mx-auto px-6">
           <div className="lg:text-center">
             <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-              Our Services
+            {t("mi 20")}
             </h2>
             <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
-              Comprehensive investment solutions tailored to your needs
+            {t("mi 21")}
             </p>
           </div>
           <div className="mt-10">
@@ -101,33 +101,31 @@ function Home() {
               <div className="bg-white shadow-lg rounded-lg overflow-hidden">
                 <div className="px-6 py-8">
                   <h3 className="text-lg font-medium text-gray-900">
-                    Fund Management
+                  {t("product 1")}
                   </h3>
                   <p className="mt-4 text-base text-gray-500">
-                    Professional management of investment funds with a focus on
-                    maximizing returns while managing risk.
+                  {t("mi 23")}
                   </p>
                 </div>
               </div>
               <div className="bg-white shadow-lg rounded-lg overflow-hidden">
                 <div className="px-6 py-8">
                   <h3 className="text-lg font-medium text-gray-900">
-                     Management Account
+                  {t("mi 26")}
                   </h3>
                   <p className="mt-4 text-base text-gray-500">
-                    Customized portfolio solutions designed to meet specific
-                    investment objectives and risk tolerance.
+                  {t("mi 24")}
                   </p>
                 </div>
               </div>
               <div className="bg-white shadow-lg rounded-lg overflow-hidden">
                 <div className="px-6 py-8">
                   <h3 className="text-lg font-medium text-gray-900">
-                    Investment Advisory
+                  {t("mi 22")}
                   </h3>
                   <p className="mt-4 text-base text-gray-500">
-                    Expert guidance and strategic advice for making informed
-                    investment decisions in Vietnamese markets.
+                  {t("mi 25")}
+
                   </p>
                 </div>
               </div>

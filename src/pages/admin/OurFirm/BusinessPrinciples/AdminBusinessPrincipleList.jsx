@@ -39,6 +39,10 @@ function AdminBusinessPrincipleList() {
     }
   };
 
+  const getTextForLanguage = (textMap, lang = "en") => {
+    return textMap?.[lang] || "N/A";
+  };
+
   return (
     <div className="p-4">
       <h1 className="text-xl font-semibold mb-4">Manage BusinessPrinciples</h1>
@@ -67,9 +71,9 @@ function AdminBusinessPrincipleList() {
           {items.map((item) => (
             <tr key={item.id} className="hover:bg-gray-50">
               <td className="py-2 px-4 border-b">{item.id}</td>
-              <td className="py-2 px-4 border-b">{item.title}</td>
+              <td className="py-2 px-4 border-b">{getTextForLanguage(item.titles, "en")}</td>
               <td className="py-2 px-4 border-b">
-                {item.description?.substring(0, 50)}...
+              {getTextForLanguage(item.descriptions, "en").substring(0, 50)}...
               </td>
               <td className="py-2 px-4 border-b">
                 <button

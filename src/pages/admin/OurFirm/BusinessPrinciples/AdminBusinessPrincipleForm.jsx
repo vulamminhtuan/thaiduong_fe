@@ -9,8 +9,8 @@ function AdminBusinessPrincipleForm() {
   const isEditMode = Boolean(id);
 
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
+    titles: { en: "", vi: "" },
+    descriptions: { en: "", vi: "" },
   });
 
   const [loading, setLoading] = useState(false);
@@ -27,8 +27,8 @@ function AdminBusinessPrincipleForm() {
     try {
       const res = await axios.get(`/api/business-principles/${id}`);
       setFormData({
-        title: res.data.title || "",
-        description: res.data.description || "",
+        titles: res.data.titles || { en: "", vi: "" },
+        descriptions: res.data.descriptions || { en: "", vi: "" },
       });
     } catch (err) {
       console.error("Error loading item:", err);
@@ -38,9 +38,12 @@ function AdminBusinessPrincipleForm() {
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const handleChange = (e, field, lang) => {
+    const { value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [field]: { ...prev[field], [lang]: value },
+    }));
   };
 
   const handleSave = async (e) => {
@@ -49,10 +52,8 @@ function AdminBusinessPrincipleForm() {
 
     try {
       if (isEditMode) {
-        // PUT
         await axios.put(`/api/business-principles/${id}`, formData);
       } else {
-        // POST
         await axios.post("/api/business-principles", formData);
       }
       navigate("/admin/our-firm/business-principles");
@@ -72,26 +73,36 @@ function AdminBusinessPrincipleForm() {
       {error && <p className="text-red-500 mb-2">{error}</p>}
 
       <form onSubmit={handleSave} className="space-y-4 max-w-md">
-        <div>
+      <div>
           <label className="block text-sm font-medium mb-1">Title</label>
-          <input
-            type="text"
-            name="title"
-            className="w-full border p-2 rounded"
-            value={formData.title}
-            onChange={handleChange}
-            required
-          />
+          {Object.keys(formData.titles).map((lang) => (
+            <div key={lang} className="mb-2">
+              <input
+                type="text"
+                placeholder={`Title (${lang.toUpperCase()})`}
+                value={formData.titles[lang]}
+                onChange={(e) => handleChange(e, "titles", lang)}
+                className="w-full border p-2 rounded"
+                required
+              />
+            </div>
+          ))}
         </div>
+        
         <div>
           <label className="block text-sm font-medium mb-1">Description</label>
-          <textarea
-            name="description"
-            className="w-full border p-2 rounded"
-            rows={10}
-            value={formData.description}
-            onChange={handleChange}
-          />
+          {Object.keys(formData.descriptions).map((lang) => (
+            <div key={lang} className="mb-2">
+              <textarea
+                placeholder={`Description (${lang.toUpperCase()})`}
+                rows={4}
+                value={formData.descriptions[lang]}
+                onChange={(e) => handleChange(e, "descriptions", lang)}
+                className="w-full border p-2 rounded"
+                required
+              />
+            </div>
+          ))}
         </div>
 
         <button type="submit" className="px-3 py-1 bg-blue-600 text-white rounded">

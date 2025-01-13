@@ -2,17 +2,27 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom"; 
 import axios from "axios";
 import Breadcrumb from "../Breadcrumb"; 
+import { useTranslation } from "react-i18next";
+
 
 function InvestorRelationsDetail() {
   const { id } = useParams();
   const [detailData, setDetailData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { t, i18n } = useTranslation();
 
+  const getTitle = (item) => {
+    return i18n.language === "vi" ? item.titleVi : item.titleEn;
+  };
+  
+  const getContent = (item) => {
+    return i18n.language === "vi" ? item.contentVi : item.contentEn;
+  };
   const breadcrumbItems = [
     { label: "Our Firm", href: "/about" },
     { label: "Investor Relations", href: "/about" }, 
-    ...(detailData ? [{ label: `${new Date(detailData.date).toLocaleDateString("vi-VN")}: ${detailData.title}` }] : [])
+    ...(detailData ? [{ label: `${new Date(detailData.date).toLocaleDateString("vi-VN")}: ${getTitle(detailData)}` }] : [])
 ];
 
   useEffect(() => {
@@ -28,7 +38,7 @@ function InvestorRelationsDetail() {
     };
     fetchDetail();
   }, [id]);
-
+ 
   if (loading) {
     return <div className="container mx-auto px-6 py-8">Loading...</div>;
   }
@@ -48,14 +58,14 @@ function InvestorRelationsDetail() {
       </div>
 
       <h1 className="text-3xl font-bold mb-4">
-        {new Date(detailData.date).toLocaleDateString("vi-VN")}: {detailData.title}
+        {new Date(detailData.date).toLocaleDateString("vi-VN")}: {getTitle(detailData)}
       </h1>
 
      
       {detailData.link ? (
         <p className="text-blue-600 underline mb-4">
           <a
-            href={`http://localhost:8080/api/files/${detailData.link
+            href={`${process.env.BACKEND_URL}/api/files/${detailData.link
                           .split("\\")
                           .pop()}`}
             target="_blank"
@@ -75,12 +85,12 @@ function InvestorRelationsDetail() {
           src={
             detailData.imageUrl.startsWith("http")
           ? detailData.imageUrl
-          : `http://localhost:8080/api/images/${detailData.imageUrl}`
+          : `${process.env.BACKEND_URL}/api/images/${detailData.imageUrl}`
           }
-          alt={detailData.title}
+          alt={getTitle(detailData)}
           className="w-64 h-64 object-cover mr-6 rounded-md"
         />
-        <p className="text-gray-700">{detailData.content}</p>
+        <p className="text-gray-700">{getContent(detailData)}</p>
       </div>
 
       <div className="mt-8">

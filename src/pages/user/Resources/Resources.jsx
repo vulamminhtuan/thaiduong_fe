@@ -19,7 +19,7 @@ const Resources = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedArticle, setSelectedArticle] = useState(null);
-  const {t} = useTranslation();  
+  const { t, i18n } = useTranslation();
 
   const arrTags = [
     { title: t('list our resources.1'), content: [] },
@@ -62,16 +62,17 @@ const Resources = () => {
   }, [indexAbout,page]);
 
   useEffect(() => {
-    if (indexAbout === 1) {
-      if (!searchTerm) {
-        setFilteredNews(news);
-      } else {
-        const lowerKeyword = searchTerm.toLowerCase();
-        const filtered = news.filter((article) =>
-          article.title.toLowerCase().includes(lowerKeyword)
-        );
-        setFilteredNews(filtered);
-      }
+    if (!searchTerm) {
+      setFilteredNews(news);
+    } else {
+      const lowerKeyword = searchTerm.toLowerCase();
+      const filtered = news.filter((article) => {
+        // Lấy ra chuỗi title phù hợp ngôn ngữ
+        const localizedTitle = getLocalizedContent(article.title) || '';
+        return localizedTitle.toLowerCase().includes(lowerKeyword);
+      });
+      setFilteredNews(filtered);
+    
     }
   }, [indexAbout, news, searchTerm]);
 
@@ -91,6 +92,7 @@ const Resources = () => {
       <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-[#f99d20]"></div>
     </div>
   );
+  const getLocalizedContent = (content) => content?.[i18n.language] || content?.en; // Fallback to English if language missing
 
   // Hiển thị trạng thái Loading
   if (loading) {
@@ -164,12 +166,16 @@ const Resources = () => {
                           onClick={() => setSelectedArticle(article)}
                         >
                           <img
-                            src={article.imageUrl}
+                            src={
+                              article.imageUrl.startsWith("http")
+                              ? article.imageUrl
+                              : `${process.env.BACKEND_URL}/api/images/${article.imageUrl}`
+                          }
                             alt={article.title}
                             className="w-full h-48 object-cover rounded-t-lg mb-4"
                           />
                           <h3 className="font-semibold text-lg mb-2 text-gray-900">
-                            {truncateText(article.title, 80)}
+                            {getLocalizedContent(article.title, 80)}
                           </h3>
                           <p className="text-sm text-gray-500">
                             {article.createdAt
@@ -195,10 +201,10 @@ const Resources = () => {
                             : "bg-[#f99d20] text-white"
                         }`}
                       >
-                        Prev
+                        {t("mi 19")}
                       </button>
 
-                      <span>{`Page ${page + 1} / ${totalPages}`}</span>
+                      <span>{` ${page + 1} / ${totalPages}`}</span>
 
                       <button
                         onClick={() => setPage((prev) => prev + 1)}
@@ -209,7 +215,7 @@ const Resources = () => {
                             : "bg-[#f99d20] text-white"
                         }`}
                       >
-                        Next
+                        {t("mi 18")}
                       </button>
                     </div>
                   </>
@@ -227,7 +233,7 @@ const Resources = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="relative bg-white rounded-lg max-w-lg w-full shadow-lg">
             <div className="flex justify-between items-center border-b border-gray-200 px-6 py-4">
-              <h5 className="text-lg font-semibold text-gray-800">{selectedArticle.title}</h5>
+              <h5 className="text-lg font-semibold text-gray-800">{getLocalizedContent(selectedArticle.title)}</h5>
               <button
                 type="button"
                 className="text-gray-400 hover:text-gray-600 focus:outline-none"
@@ -245,11 +251,15 @@ const Resources = () => {
             </div>
             <div className="px-6 py-4">
               <img
-                src={selectedArticle.imageUrl}
+              src={
+                selectedArticle.imageUrl.startsWith("http")
+                              ? selectedArticle.imageUrl
+                              : `${process.env.BACKEND_URL}/api/images/${selectedArticle.imageUrl}`
+                          }
                 alt={selectedArticle.title}
                 className="w-full h-auto rounded-md mb-4"
               />
-              <p className="text-gray-700 mb-4">{selectedArticle.description}</p>
+              <p className="text-gray-700 mb-4">{getLocalizedContent(selectedArticle.content)}</p>
               <p className="text-sm text-gray-500">
                 Ngày:{" "}
                 {selectedArticle.createdAt

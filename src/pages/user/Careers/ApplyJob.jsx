@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function ApplyJob() {
   const { id } = useParams(); 
   const navigate = useNavigate();
+    const { t, i18n } = useTranslation(); // Lấy ngôn ngữ hiện tại
+  
 
   const [form, setForm] = useState({
     fullName: "",
@@ -62,7 +65,7 @@ function ApplyJob() {
       // });
 
       setMessage(
-        "Application submitted successfully!"
+        t("mi 14")
       );
       setError("");
 
@@ -73,10 +76,9 @@ function ApplyJob() {
     } catch (err) {
       console.error("Error submitting application:", err);
       setError(
-        "An error occurred while submitting your application. Please try again."
+        t("mi 16")
       );
       setMessage("");
-      // Nếu lỗi thì cho phép người dùng submit lại
       setIsSubmitting(false);
     }
   };
@@ -101,7 +103,7 @@ function ApplyJob() {
 
   return (
     <div className="container mx-auto p-4 max-w-md">
-      <h1 className="text-2xl font-bold mb-4">Apply for Job {id}</h1>
+      <h1 className="text-2xl font-bold mb-4">{t("mi 6")} {id}</h1>
 
       {message && <p className="text-green-600 mb-2">{message}</p>}
       {error && <p className="text-red-600 mb-2">{error}</p>}
@@ -112,7 +114,7 @@ function ApplyJob() {
           }} className="space-y-4">
         <div>
           <label className="block mb-1 font-medium" htmlFor="fullName">
-            Full Name
+          {t("mi 7")}
           </label>
           <input
             name="fullName"
@@ -140,7 +142,7 @@ function ApplyJob() {
 
         <div>
           <label className="block mb-1 font-medium" htmlFor="email">
-              Phone
+          {t("mi 8")}
           </label>
           <input
             name="phone"
@@ -154,7 +156,7 @@ function ApplyJob() {
 
         <div>
           <label className="block mb-1 font-medium" htmlFor="email">
-            Address
+          {t("mi 10")}
           </label>
           <input
             name="address"
@@ -167,7 +169,7 @@ function ApplyJob() {
         </div>
         <div>
           <label className="block mb-1 font-medium" htmlFor="coverLetter">
-            Cover Letter
+          {t("mi 11")}
           </label>
           <textarea
             id="coverLetter"
@@ -181,7 +183,7 @@ function ApplyJob() {
         </div>
         <div>
           <label className="block mb-1 font-medium" htmlFor="resume">
-            Resume (PDF/Doc)
+          {t("mi 12")}(PDF/Doc)
           </label>
           <input
             name="resume"
@@ -199,7 +201,7 @@ function ApplyJob() {
           disabled={isSubmitting}
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:bg-gray-400"
         >
-          {isSubmitting ? "Submitting..." : "Submit Application"}
+          {isSubmitting ? t("mi 15") : t("mi 13")}
         </button>
       </form>
       {isVerificationModalVisible && (

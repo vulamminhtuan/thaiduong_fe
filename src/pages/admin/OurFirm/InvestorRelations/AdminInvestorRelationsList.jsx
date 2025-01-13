@@ -57,8 +57,10 @@ function AdminInvestorRelationsList() {
         <thead>
           <tr>
             <th className="py-2 px-4 border-b">ID</th>
-            <th className="py-2 px-4 border-b">Title</th>
-            <th className="py-2 px-4 border-b">Content</th>
+            <th className="py-2 px-4 border-b">Title VI</th>
+            <th className="py-2 px-4 border-b">Title EN</th>
+            <th className="py-2 px-4 border-b">Content VI</th>
+            <th className="py-2 px-4 border-b">Content EN</th>
             <th className="py-2 px-4 border-b">Date</th>
             <th className="py-2 px-4 border-b">ImageUrl</th>
             <th className="py-2 px-4 border-b">Link</th>
@@ -69,10 +71,13 @@ function AdminInvestorRelationsList() {
           {items.map((item) => (
             <tr key={item.id} className="hover:bg-gray-50">
               <td className="py-2 px-4 border-b">{item.id}</td>
-              <td className="py-2 px-4 border-b">{item.title}</td>
-              <td className="py-2 px-4 border-b">
+              <td className="py-2 px-4 border-b">{item.titleVi}</td>
+              <td className="py-2 px-4 border-b">{item.titleEn}</td>
+              <td className="py-2 px-4 border-b">{item.contentVi}</td>
+              <td className="py-2 px-4 border-b">{item.contentEn}</td>
+              {/* <td className="py-2 px-4 border-b">
                 {item.content?.slice(0, 50)}...
-              </td>
+              </td> */}
               <td className="py-2 px-4 border-b">
                 {item.date ? new Date(item.date).toLocaleDateString("vi-VN") : ""}
                 </td>
@@ -82,7 +87,7 @@ function AdminInvestorRelationsList() {
                           src={
                             item.imageUrl.startsWith("http")
                               ? item.imageUrl
-                              : `http://localhost:8080/api/images/${item.imageUrl}`
+                              : `${process.env.BACKEND_URL}/api/images/${item.imageUrl}`
                           }
                           alt={item.title}
                         
@@ -95,7 +100,7 @@ function AdminInvestorRelationsList() {
               <td className="py-2 px-4 border-b">
                 {item.link ? (
                     <a
-                    href={`http://localhost:8080/api/files/${item.link
+                    href={`${process.env.BACKEND_URL}/api/files/${item.link
                           .split("\\")
                           .pop()}`}
                     target="_blank"

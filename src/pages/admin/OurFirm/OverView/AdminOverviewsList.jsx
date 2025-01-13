@@ -67,7 +67,7 @@ function AdminOverviewsList() {
             <tr key={item.id} className="hover:bg-gray-50">
               <td className="py-2 px-4 border-b text-left">{item.id}</td>
               <td className="py-2 px-4 border-b text-left">
-                {item.content?.slice(0,500)}...
+              {item.content?.en.slice(0, 100)}...
               </td>
               <td className="py-2 px-4 border-b text-left">
                 <button

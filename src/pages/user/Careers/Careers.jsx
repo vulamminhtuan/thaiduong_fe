@@ -12,7 +12,7 @@ function Careers() {
   const [selectedJob, setSelectedJob] = useState(null); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const {t} = useTranslation();  
+  const { t, i18n } = useTranslation(); // Lấy ngôn ngữ hiện tại
   const navigate = useNavigate();
   const { auth } = useContext(AuthContext);
 
@@ -48,6 +48,7 @@ function Careers() {
     setSelectedJob(null); 
     navigate(`/jobs/${jobId}/apply`); 
   };
+  const getLocalizedContent = (content) => content?.[i18n.language] || content?.en; // Mặc định dùng tiếng Anh nếu thiếu ngôn ngữ
 
   if (loading) {
     return (
@@ -84,7 +85,7 @@ function Careers() {
               <div className="flex justify-between items-start">
                 <div>
                 <h2 className="text-xl font-semibold text-gray-900">
-                  {job.title}
+                  {getLocalizedContent(job.title)}
                   {job.createdAt && (
                     <span className="ml-2 text-sm text-gray-500">
                     (
@@ -102,15 +103,15 @@ function Careers() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10l1.5-1.5a1 1 0 011.415 0L12 14.585l6.085-6.085a1 1 0 011.415 0L21 10M5 19h14v-7H5v7z" />
                     </svg>
                     <span className="mx-2">•</span>
-                    <span>{job.numberOfApplications} Applications</span>
+                    <span>{job.numberOfApplications} {t("mi")}</span>
                   </div>
                 </div>
               </div>
-              {job.description && (
+              {getLocalizedContent(job.description) && (
                 <p className="mt-4 text-gray-600">
                   {job.description.length > 100
                     ? job.description.substring(0, 100) + "..."
-                    : job.description}
+                    : getLocalizedContent(job.description)}
                 </p>
               )}
               <div>
@@ -118,7 +119,7 @@ function Careers() {
                   onClick={() => handleReadMore(job)}
                   className="mt-4 text-blue-500 hover:text-[#f99d20] cursor-pointer"
                 >
-                  Read more...
+                  {t("mi 2")}...
                 </button>
               </div>
             </div>
@@ -139,7 +140,7 @@ function Careers() {
 
               {/* Tiêu đề công việc */}
               <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center border-b-2 pb-2">
-                {selectedJob.title}
+                 {getLocalizedContent(selectedJob.title)}
               </h2>
 
               {/* Thông tin cơ bản */}
@@ -148,7 +149,7 @@ function Careers() {
                   <svg className="w-5 h-5 mr-2 text-purple-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7 7 7M5 19h14v-7H5v7z" />
                   </svg>
-                  <span className="text-lg font-medium">{selectedJob.address}</span>
+                  <span className="text-lg font-medium"> {getLocalizedContent(selectedJob.address)}</span>
                 </div>
                 <div className="flex items-center text-gray-600">
                   <svg className="w-5 h-5 mr-2 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -158,25 +159,25 @@ function Careers() {
                 </div>
                 <div className="text-gray-600">
                   <span className="text-lg font-medium">
-                    {selectedJob.numberOfApplications} Applications
+                    {selectedJob.numberOfApplications} {t("mi")}
                   </span>
                 </div>
               </div>
 
               {/* Mô tả công việc */}
-              <p className="mt-6 text-gray-700 leading-relaxed">{selectedJob.description}</p>
+              <p className="mt-6 text-gray-700 leading-relaxed"> {getLocalizedContent(selectedJob.description)}</p>
 
               {/* Yêu cầu công việc */}
               <div className="mt-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Requirements:</h3>
-                {selectedJob.requirements && selectedJob.requirements.length > 0 ? (
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{t("mi 4")}:</h3>
+                { getLocalizedContent(selectedJob.requirements )&&  getLocalizedContent(selectedJob.requirements ).length > 0 ? (
                   <ul className="list-disc list-inside space-y-2 text-gray-700">
-                    {selectedJob.requirements.map((req, index) => (
+                    { getLocalizedContent(selectedJob.requirements ).map((req, index) => (
                       <li key={index}>{req}</li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-gray-500">No specific requirements listed.</p>
+                  <p className="text-gray-500">{t("mi 5")}</p>
                 )}
               </div>
               <div className="mt-6 text-right">
@@ -184,7 +185,7 @@ function Careers() {
                   className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
                   onClick={() => handleApplyNow(selectedJob.id)}
                 >
-                  Apply Now
+                  {t("mi 3")}
                 </button>
               </div>
             </div>

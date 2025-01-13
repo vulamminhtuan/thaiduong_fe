@@ -4,7 +4,7 @@ import axios from "axios";
 
 function AdminNews() {
   const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [ loading,setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
@@ -14,16 +14,17 @@ function AdminNews() {
 
   const [form, setForm] = useState({
     id: null,
-    title: "",
+    title: { en: "", vi: "" },
+    description: { en: "", vi: "" },
+    content: { en: "", vi: "" },
     imageUrl: "",
-    description: "",
-    content: "",
-    createdAt: "", 
+    imageFile: null,
+    createdAt: "",
   });
 
   useEffect(() => {
     fetchItems();
-  }, []);
+  }, );
 
   useEffect(() => {
     return () => {
@@ -47,6 +48,17 @@ function AdminNews() {
       setLoading(false);
     }
   };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setForm((prev) => ({ ...prev, imageFile: file })); // Đặt ảnh mới vào form
+      const previewUrl = URL.createObjectURL(file); // Tạo URL xem trước
+      setImagePreview(previewUrl); // Đặt URL xem trước cho ảnh mới
+      setForm((prev) => ({ ...prev, imageUrl: "" })); // Xóa URL ảnh cũ nếu chọn ảnh mới
+    }
+  };
+  
 
   const handleDeleteSelected = async () => {
     if (
@@ -77,9 +89,15 @@ function AdminNews() {
   };
 
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+  const handleInputChange = (e, lang, field) => {
+    const { value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [field]: {
+        ...prev[field],
+        [lang]: value,
+      },
+    }));
   };
 
   const handleSave = async () => {
@@ -125,11 +143,11 @@ function AdminNews() {
       fetchItems();
       setForm({
         id: null,
-        title: "",
-        imageFile: null,
+        title: { en: "", vi: "" },
+        description: { en: "", vi: "" },
+        content: { en: "", vi: "" },
         imageUrl: "",
-        description: "",
-        content: "",
+        imageFile: null,
         createdAt: "",
       });
       setIsEditing(false);
@@ -152,33 +170,45 @@ function AdminNews() {
   }
 };
 
-  const handleEdit = (item) => {
-    setForm(item);
-    setIsEditing(true);
-    navigate("/admin/news/edit");
-  };
+const handleEdit = (item) => {
+  setForm(item); 
+  setIsEditing(true);
+
+  if (item.imageUrl) {
+    setImagePreview(
+      item.imageUrl.startsWith("http")
+        ? item.imageUrl
+        : `${process.env.BACKEND_URL}/api/images/${item.imageUrl}`
+    );
+  } else {
+    setImagePreview(null); 
+  }
+
+  navigate("/admin/news/edit");
+};
+
 
   const handleAddNew = () => {
     setForm({
       id: null,
-      title: "",
-      imageUrl: "",
-      description: "",
-      content: "",
-      createdAt: "",
+        title: { en: "", vi: "" },
+        description: { en: "", vi: "" },
+        content: { en: "", vi: "" },
+        imageUrl: "",
+        imageFile: null,
+        createdAt: "",
     });
     setIsEditing(false);
     navigate("/admin/news/add");
   };
 
-  const handleSelectAll = (e) => {
-    if (e.target.checked) {
-      setSelectedIds(items.map((item) => item.id));
-    } else {
-      setSelectedIds([]);
-    }
-  };
-
+  // const handleSelectAll = (e) => {
+  //   if (e.target.checked) {
+  //     setSelectedIds(items.map((item) => item.id));
+  //   } else {
+  //     setSelectedIds([]);
+  //   }
+  // };
   const isAddingOrEditing =
     location.pathname.includes("add") || location.pathname.includes("edit");
 
@@ -217,18 +247,23 @@ function AdminNews() {
             className="space-y-4"
           >
             <div>
-              <label htmlFor="title" className="block text-sm font-medium mb-1">
-                Title
-              </label>
-              <input
-                id="title"
-                type="text"
-                name="title"
-                value={form.title || ""}
-                onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
+              <label className="block text-sm font-medium mb-1">Title</label>
+              <div className="space-y-2">
+                <input
+                  type="text"
+                  placeholder="Title EN"
+                  value={form.title.en}
+                  onChange={(e) => handleInputChange(e, "en", "title")}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+                <input
+                  type="text"
+                  placeholder="Title VN"
+                  value={form.title.vi}
+                  onChange={(e) => handleInputChange(e, "vi", "title")}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </div>
             </div>
 
             <div>
@@ -238,15 +273,7 @@ function AdminNews() {
               <input
                 id="imageFile"
                 type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  if (file) {
-                    setForm((prev) => ({ ...prev, imageFile: file }));
-                    const previewUrl = URL.createObjectURL(file);
-                    setImagePreview(previewUrl);
-                  }
-                }}
+                onChange={handleImageUpload}
                 className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               {(imagePreview || form.imageUrl) && (
@@ -256,52 +283,54 @@ function AdminNews() {
                   className="mt-2 max-w-xs h-40 object-cover rounded shadow"
                 />
               )}
+
             </div>
 
             <div>
-              <label htmlFor="description" className="block text-sm font-medium mb-1">
-                Description
-              </label>
-              <textarea
-                id="description"
-                name="description"
-                rows={2}
-                value={form.description}
-                onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              <label className="block text-sm font-medium mb-1">Description</label>
+              <div className="space-y-2">
+                <textarea
+                  placeholder="Description EN"
+                  value={form.description.en}
+                  onChange={(e) => handleInputChange(e, "en", "description")}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+                <textarea
+                  placeholder="Description VN"
+                  value={form.description.vi}
+                  onChange={(e) => handleInputChange(e, "vi", "description")}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </div>
             </div>
 
             <div>
-              <label htmlFor="content" className="block text-sm font-medium mb-1">
-                Content
-              </label>
-              <textarea
-                id="content"
-                name="content"
-                rows={4}
-                value={form.content || ""}
-                onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
+              <label className="block text-sm font-medium mb-1">Content</label>
+              <div className="space-y-2">
+                <textarea
+                maxLength={10000}
+                minLength={1}
+                  placeholder="Content EN"
+                  value={form.content.en}
+                  onChange={(e) => handleInputChange(e, "en", "content")}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              
+                {form.content.en.length}/10000 characters
+ 
+                <textarea
+                maxLength={10000}
+                minLength={1}
+                  placeholder="Content VN"
+                  value={form.content.vi}
+                  onChange={(e) => handleInputChange(e, "vi", "content")}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+                {form.content.vi.length}/10000 characters
+              </div>
             </div>
 
-            <div>
-              <label htmlFor="createdAt" className="block text-sm font-medium mb-1">
-                Created At
-              </label>
-              <input
-                id="createdAt"
-                type="text"
-                name="createdAt"
-                value={form.createdAt || "Will be generated on save"}
-                onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                readOnly
-              />
-            </div>
-
+         
             <div className="flex gap-2">
               <button
                 type="submit"
@@ -365,7 +394,7 @@ function AdminNews() {
                           src={
                             item.imageUrl.startsWith("http")
                               ? item.imageUrl
-                              : `http://localhost:8080/api/images/${item.imageUrl}`
+                              : `${process.env.BACKEND_URL}/api/images/${item.imageUrl}`
                           }
                           alt={item.title}
                         
@@ -375,16 +404,16 @@ function AdminNews() {
                         <span>Không có ảnh</span>
                       )}
                     </td>
-                    <td className="px-4 py-3">{item.title}</td>
+                    <td className="px-4 py-3">{item.title.en}</td>
                     <td className="px-4 py-3">
                       {item.description.length > 50
                         ? `${item.description.substring(0, 50)}...`
-                        : item.description}
+                        : item.description.en}
                     </td>
                     <td className="px-4 py-3">
                       {item.content.length > 50
                         ? `${item.content.substring(0, 50)}...`
-                        : item.content}
+                        : item.content.en}
                     </td>
                     <td className="px-4 py-3">
                       {item.createdAt

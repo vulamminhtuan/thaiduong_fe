@@ -8,7 +8,7 @@ function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { t } = useTranslation();
+  const { t,i18n } = useTranslation();
 
   const productEndpoints = [
     {
@@ -41,25 +41,19 @@ function Products() {
             return res.json();
           }),
         );
-
+  
         const results = await Promise.all(fetchPromises);
-
+  
         // Kết hợp dữ liệu từ productEndpoints và kết quả từ API
         const aggregatedProducts = productEndpoints.map((product, index) => {
-          const data = results[index];
-          const description =
-            data && data.length > 0
-              ? data[0].content.split('\n').filter(para => para.trim() !== '')
-              : ['No data available.'];
-          const imageURL = data && data.length > 0 ? data[0].imageURL : '';
-
-          return {
-            ...product, // Giữ nguyên title và endpoint từ productEndpoints
-            description,
-            imageURL,
-          };
+          const data = results[index] || [];
+          const contentMap = data.length > 0 ? data[0].content : {};
+          const imageURL = data.length > 0 ? data[0].imageURL : '';
+        
+          return { ...product, description: contentMap, imageURL };
         });
-
+        
+  
         setProducts(aggregatedProducts);
       } catch (err) {
         setError(err.message);
@@ -67,9 +61,10 @@ function Products() {
         setLoading(false); // Kết thúc quá trình tải dữ liệu
       }
     };
-
+  
     fetchData();
   }, []);
+  
 
   const getLinkClass = index => {
     return indexProduct === index
@@ -77,7 +72,13 @@ function Products() {
       : 'hover:bg-[#f99d20] hover:text-white';
   };
 
- 
+  const getLocalizedContent = (contentMap) => {
+    const text = contentMap?.[i18n.language] || contentMap?.en || 'No data available.';
+    return typeof text === 'string'
+      ? text.split('\n').filter(para => para.trim() !== '')
+      : ['No data available.'];
+  };
+
   const breadcrumbItems = [
     { label: t('list menu.3') , href: '/products' },
     ...(indexProduct !== null ? [{ label: t(`product ${indexProduct + 1}`) }] : []),
@@ -172,7 +173,7 @@ function Products() {
                     <img
                       src={products[indexProduct].imageURL.startsWith('http')
                         ? products[indexProduct].imageURL
-                        :  `http://localhost:8080/api/images/${products[indexProduct].imageURL}`} 
+                        :  `${process.env.BACKEND_URL}/api/images/${products[indexProduct].imageURL}`} 
                       alt={t(`product ${indexProduct + 1}`)}
                       className="mt-2 w-full h-40 object-cover rounded"
                     />
@@ -182,9 +183,9 @@ function Products() {
                 </div>
 
                 <div className='col-span-8 flex flex-col gap-4'>
-                  {products[indexProduct].description.map((para, idx) => (
-                    <p key={idx}>{para}</p>
-                  ))}
+                {getLocalizedContent(products[indexProduct].description).map((para, idx) => (
+                  <p key={idx}>{para}</p>
+                ))}
                 </div>
               </div>
             </>

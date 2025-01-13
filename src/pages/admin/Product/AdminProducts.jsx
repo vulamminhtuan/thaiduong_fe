@@ -6,7 +6,11 @@ import { adminProductConfig } from './adminProductConfig';
 function AdminProducts() {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
-  const [form, setForm] = useState({ title: '', content: '', image: null });
+  const [form, setForm] = useState({
+    title: { en: '', vi: '' },
+    content: { en: '', vi: '' },
+    image: null,
+  });
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -52,9 +56,7 @@ function AdminProducts() {
         formData.append('image', form.image);
 
         const uploadResponse = await axios.post('/api/upload', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
+          headers: { 'Content-Type': 'multipart/form-data' },
         });
 
         imageUrl = uploadResponse.data.imageUrl;
@@ -74,7 +76,7 @@ function AdminProducts() {
       }
 
       await fetchData();
-      setForm({ title: '', content: '', image: null });
+      setForm({ title: { en: '', vi: '' }, content: { en: '', vi: '' }, image: null});
       setIsEditing(false);
       setEditId(null);
       setShowEditModal(false);
@@ -107,15 +109,21 @@ function AdminProducts() {
     setEditId(item.id);
     setShowEditModal(true);
     if (item.imageURL) {
-      setImagePreview(item.imageURL);
+      const imageUrl = item.imageURL.startsWith("https") 
+        ? item.imageURL 
+        : `${process.env.BACKEND_URL}/api/images/${item.imageURL}`;
+      setImagePreview(imageUrl);
     }
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setForm(prev => ({
+  const handleInputChange = (e, field, lang) => {
+    const { value } = e.target;
+    setForm((prev) => ({
       ...prev,
-      [name]: value
+      [field]: {
+        ...prev[field],
+        [lang]: value,
+      },
     }));
   };
 
@@ -153,20 +161,20 @@ function AdminProducts() {
       {data ? (
         <div className="bg-white p-4 rounded shadow flex flex-col items-center space-y-2 w-80">
           {/* Tựa đề */}
-          <h3 className="text-center text-lg font-semibold">{data.title}</h3>
+          <h3 className="text-center text-lg font-semibold">{data.title.en}</h3>
 
           {/* Hình ảnh */}
           {data.imageURL && (
             <img
               // src={`${process.env.REACT_APP_API_URL || ''}${data.imageURL}`}
-              src={data.imageURL.startsWith("https") ? data.imageURL : `http://localhost:8080/api/images/${data.imageURL}`}
+              src={data.imageURL.startsWith("https") ? data.imageURL : `${process.env.BACKEND_URL}/api/images/${data.imageURL}`}
               alt={data.title}
               className="w-72 h-48 object-cover rounded"
             />
           )}
 
           {/* Nội dung */}
-          <p className="text-sm text-gray-700 text-center">{data.content}</p>
+          <p className="text-sm text-gray-700 text-center">{data.content.en}</p>
 
           {/* Các nút thao tác */}
           <div className="flex justify-between w-full gap-2">
@@ -198,25 +206,50 @@ function AdminProducts() {
             <form onSubmit={handleSave}>
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Title
+                Title (EN)
                 </label>
                 <input
                   type="text"
                   name="title"
-                  value={form.title}
-                  onChange={handleInputChange}
+                  value={form.title.en}
+                  onChange={(e) => handleInputChange(e, 'title', 'en')}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   required
                 />
               </div>
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Content
+                Title (VN)
+                </label>
+                <input
+                  type="text"
+                  name="title"
+                  value={form.title.vi}
+                  onChange={(e) => handleInputChange(e, 'title', 'vi')}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Content (EN)
                 </label>
                 <textarea
                   name="content"
-                  value={form.content}
-                  onChange={handleInputChange}
+                  value={form.content.en}
+                  onChange={(e) => handleInputChange(e, 'content', 'en')}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Content (VN)
+                </label>
+                <textarea
+                  name="content"
+                  value={form.content.vi}
+                  onChange={(e) => handleInputChange(e, 'content', 'vi')}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32"
                   required
                 />

@@ -43,6 +43,13 @@ function AdminCareers() {
     navigate("/admin/jobs/add");
   };
 
+  const formatEnglishText = (textMap) => {
+    if (!textMap || !textMap.en) return "N/A"; // Kiểm tra nếu không có tiếng Anh
+    return textMap.en; // Trả về nội dung tiếng Anh
+  };
+  
+
+
   return (
     <div className="p-4">
       <div className="flex items-center justify-between mb-4">
@@ -93,11 +100,11 @@ function AdminCareers() {
               {jobs.map((job) => (
                 <tr key={job.id} className="border-b hover:bg-gray-50">
                   <td className="px-4 py-3">{job.id}</td>
-                  <td className="px-4 py-3">{job.title}</td>
+                  <td className="px-4 py-3">{formatEnglishText(job.title)}</td>
                   <td className="px-4 py-3">
-                    {job.description.length > 50
-                      ? `${job.description.substring(0, 50)}...`
-                      : job.description}
+                    {formatEnglishText(job.description).length > 50
+                      ? `${formatEnglishText(job.description).substring(0, 50)}...`
+                      : formatEnglishText(job.description)}
                   </td>
                   <td className="px-4 py-3">
                     {job.requirements && job.requirements.length > 0 ? (
@@ -106,7 +113,7 @@ function AdminCareers() {
                       "No requirements specified"
                     )}
                   </td>
-                  <td className="px-4 py-3">{job.address}</td>
+                  <td className="px-4 py-3">{formatEnglishText(job.address)}</td>
                   <td className="px-4 py-3">{job.phone}</td>
                   <td className="px-4 py-3">
                     <div className="flex gap-2">

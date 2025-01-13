@@ -67,7 +67,7 @@ function AdminPersonList() {
             <tr key={item.id} className="hover:bg-gray-50">
               <td className="py-2 px-4 border-b text-left">{item.id}</td>
               <td className="py-2 px-4 border-b text-left">{item.username}</td>
-              <td className="py-2 px-4 border-b text-left">{item.position}</td>
+              <td className="py-2 px-4 border-b">{item.position?.en}</td>
               <td className="py-2 px-4 border-b text-left">
                 <button
                   onClick={() => navigate(`/admin/our-firm/persons/${item.id}`)}

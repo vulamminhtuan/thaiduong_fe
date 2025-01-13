@@ -8,8 +8,7 @@ function AdminOverviewForm() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    title: "",
-    content: "",
+    content: { en: "", vi: "" },
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -28,8 +27,7 @@ function AdminOverviewForm() {
     try {
       const res = await axios.get(`/api/overviews/${id}`);
       setFormData({
-        title: res.data.title || "",
-        content: res.data.content || "",
+        content: res.data.content || { en: "", vi: "" },
       });
     } catch (err) {
       console.error("Error loading overview:", err);
@@ -39,9 +37,12 @@ function AdminOverviewForm() {
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const handleChange = (e, lang) => {
+    const { value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      content: { ...prev.content, [lang]: value },
+    }));
   };
 
   const handleSave = async (e) => {
@@ -77,11 +78,23 @@ function AdminOverviewForm() {
         <div>
           <label className="block mb-1 text-sm font-medium">Content</label>
           <textarea
-            name="content"
+            placeholder="Content in English"
+            value={formData.content.en}
+            onChange={(e) => handleChange(e, "en")}
             className="w-full border p-2 rounded"
-            value={formData.content}
-            onChange={handleChange}
-            rows={10}
+            rows={6}
+            required
+          />
+        </div>
+        <div>
+          <label className="block mb-1 text-sm font-medium">Content (Vietnamese)</label>
+          <textarea
+            placeholder="Content in Vietnamese"
+            value={formData.content.vi}
+            onChange={(e) => handleChange(e, "vi")}
+            className="w-full border p-2 rounded"
+            rows={6}
+            required
           />
         </div>
 

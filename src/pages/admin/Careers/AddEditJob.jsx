@@ -4,10 +4,10 @@ import axios from "axios";
 
 function AddEditJob({ mode }) {
   const [form, setForm] = useState({
-    title: "",
-    description: "",
+   title: { en: "", vi: "" },
+    description: { en: "", vi: "" },
+    address: { en: "", vi: "" },
     requirements: [""],
-    address: "",
     phone: "",
   });
   const [saving, setSaving] = useState(false);
@@ -31,9 +31,17 @@ function AddEditJob({ mode }) {
     }
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e, field, lang = null) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+
+    if (lang) {
+        setForm((prev) => ({
+        ...prev,
+        [field]: { ...prev[field], [lang]: value },
+      }));
+    } else {
+      setForm((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSave = async (e) => {
@@ -65,38 +73,53 @@ function AddEditJob({ mode }) {
       {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={handleSave} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium mb-1">Title</label>
-          <input
-            type="text"
-            name="title"
-            value={form.title}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
+        <label className="block text-sm font-medium mb-1">Title</label>
+          {Object.keys(form.title).map((lang) => (
+            <div key={lang} className="flex items-center gap-2 mb-2">
+              <input
+                type="text"
+                value={form.title[lang]}
+                placeholder={`Title ${lang.toUpperCase()}`}
+                onChange={(e) => handleInputChange(e, "title", lang)}
+                className="flex-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+          ))}
         </div>
-        <div>
+
+
+         <div>
           <label className="block text-sm font-medium mb-1">Description</label>
-          <textarea
-            name="description"
-            rows={4}
-            value={form.description}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          ></textarea>
+          {Object.keys(form.description).map((lang) => (
+            <div key={lang} className="flex items-center gap-2 mb-2">
+              <textarea
+                rows={3}
+                value={form.description[lang]}
+                placeholder={`Description ${lang.toUpperCase()}`}
+                onChange={(e) => handleInputChange(e, "description", lang)}
+                className="flex-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              ></textarea>
+            </div>
+          ))}
         </div>
-        <div>
+
+         <div>
           <label className="block text-sm font-medium mb-1">Requirements</label>
           {form.requirements.map((req, index) => (
             <div key={index} className="flex items-center mb-2">
               <input
                 type="text"
                 value={req}
+                placeholder="Enter Requirement"
                 onChange={(e) => {
                   const newRequirements = [...form.requirements];
                   newRequirements[index] = e.target.value;
-                  setForm((prev) => ({ ...prev, requirements: newRequirements }));
+                  setForm((prev) => ({
+                    ...prev,
+                    requirements: newRequirements,
+                  }));
                 }}
                 className="flex-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
@@ -105,8 +128,13 @@ function AddEditJob({ mode }) {
                 <button
                   type="button"
                   onClick={() => {
-                    const newRequirements = form.requirements.filter((_, i) => i !== index);
-                    setForm((prev) => ({ ...prev, requirements: newRequirements }));
+                    const newRequirements = form.requirements.filter(
+                      (_, i) => i !== index
+                    );
+                    setForm((prev) => ({
+                      ...prev,
+                      requirements: newRequirements,
+                    }));
                   }}
                   className="ml-2 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                 >
@@ -117,7 +145,12 @@ function AddEditJob({ mode }) {
           ))}
           <button
             type="button"
-            onClick={() => setForm((prev) => ({ ...prev, requirements: [...prev.requirements, ""] }))}
+            onClick={() =>
+              setForm((prev) => ({
+                ...prev,
+                requirements: [...prev.requirements, ""],
+              }))
+            }
             className="mt-2 bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
           >
             Add Requirement
@@ -125,14 +158,18 @@ function AddEditJob({ mode }) {
         </div>
         <div>
           <label className="block text-sm font-medium mb-1">Address</label>
-          <input
-            type="text"
-            name="address"
-            value={form.address}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
+          {Object.keys(form.address).map((lang) => (
+            <div key={lang} className="flex items-center gap-2 mb-2">
+              <input
+                type="text"
+                value={form.address[lang]}
+                placeholder={`Address ${lang.toUpperCase()}`} 
+                onChange={(e) => handleInputChange(e, "address", lang)}
+                className="flex-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+          ))}
         </div>
         <div>
           <label className="block text-sm font-medium mb-1">Phone</label>
@@ -140,6 +177,7 @@ function AddEditJob({ mode }) {
             type="text"
             name="phone"
             value={form.phone}
+            placeholder="Enter phone number"
             onChange={handleInputChange}
             className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             required

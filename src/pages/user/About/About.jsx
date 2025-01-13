@@ -10,7 +10,7 @@ function About() {
   const [businessPrinciples, setBusinessPrinciples] = useState([]);
   const [persons, setPersons] = useState([]);
   const [investorRelations, setInvestorRelations] = useState([]);
-  const {t} = useTranslation();  
+  const { t, i18n } = useTranslation();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -30,6 +30,8 @@ function About() {
 
         setOverviews(overviewsRes.data.content);
         setBusinessPrinciples(businessPrinciplesRes.data.content);
+        console.log("API Response:", businessPrinciplesRes.data.content);
+
         setPersons(personsRes.data.content);
         
         setInvestorRelations(investorRelationsRes.data.content);
@@ -63,8 +65,16 @@ function About() {
       : "hover:bg-[#f99d20] hover:text-white";
   };
 
-  
+  const getLocalizedContent = (content) => content?.[i18n.language] || content?.en; // Mặc định dùng tiếng Anh nếu thiếu ngôn ngữ
 
+  const getTitle = (item) => {
+    return i18n.language === "vi" ? item.titleVi : item.titleEn;
+  };
+  
+  const getContent = (item) => {
+    return i18n.language === "vi" ? item.contentVi : item.contentEn;
+  };
+  
   return (
     <div className="container mx-auto px-6 py-8">
       <h1 className="text-4xl font-bold text-gray-900 mb-8">{t("list menu.2")}</h1>
@@ -100,28 +110,32 @@ function About() {
               {indexAbout === 0 &&
                 arrTags[indexAbout].content.map((ct, i) => (
                   <p key={i} className="p-2">
-                    {ct.content}
+                  {getLocalizedContent(ct.content)}
                   </p>
                 ))}
 
-              {indexAbout === 1 &&
-                arrTags[indexAbout].content.map((ct, i) => (
-                  <div key={i} className="mb-4">
-                    {ct.title && (
-                      <h4 className="font-bold text-xl">{ct.title}</h4>
-                    )}
-                    {ct.description && (
-                      <p className="p-2 text-gray-700">{ct.description}</p>
-                    )}
-                  </div>
-                ))}
+                {indexAbout === 1 &&
+              arrTags[indexAbout].content.map((ct, i) => (
+                <div key={i} className="mb-4">
+                  {ct.titles && (
+                    <h4 className="font-bold text-xl">
+                      {getLocalizedContent(ct.titles)}
+                    </h4>
+                  )}
+                  {ct.descriptions && (
+                    <p className="p-2 text-gray-700">
+                      {getLocalizedContent(ct.descriptions)}
+                    </p>
+                  )}
+                </div>
+              ))}
 
               {indexAbout === 2 && (
                 <div className="grid grid-cols-2 gap-4">
                   {arrTags[indexAbout].content.map((ct, i) => (
                     <div key={i} className="bg-slate-100 p-4 rounded-lg">
                       <h4 className="font-bold text-lg">{ct.username}</h4>
-                      <p className="p-2 text-gray-700">{ct.position}</p>
+                      <p className="p-2 text-gray-700">{getLocalizedContent(ct.position)}</p>
                     </div>
                   ))}
                 </div>
@@ -135,7 +149,7 @@ function About() {
                     className="bg-slate-100 p-4 rounded-lg flex flex-col"
                   >
                     <h4 className="font-bold text-lg">
-                    {new Date(ct.date).toLocaleDateString("vi-VN")}: {ct.title}
+                    {new Date(ct.date).toLocaleDateString("vi-VN")}: {getTitle(ct)}
                     </h4>
                     <div className="flex justify-between mt-4">
                       <div className="flex">
@@ -143,12 +157,12 @@ function About() {
                           src={
                             ct.imageUrl.startsWith("http")
                               ? ct.imageUrl
-                              : `http://localhost:8080/api/images/${ct.imageUrl}`
+                              : `${process.env.BACKEND_URL}/api/images/${ct.imageUrl}`
                           }
-                          alt={ct.title}
+                          alt={getTitle(ct)}
                           className="w-24 h-24 object-cover mr-4 rounded-md"
                         />
-                        <p className="p-2 text-gray-700">{ct.content}</p>
+                        <p className="p-2 text-gray-700">{getContent(ct)}</p>
                       </div>
                       <div className="flex items-end">
                         <Link

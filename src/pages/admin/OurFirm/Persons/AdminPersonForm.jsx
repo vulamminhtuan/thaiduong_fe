@@ -10,7 +10,7 @@ function AdminPersonForm() {
 
   const [formData, setFormData] = useState({
     username: "",
-    position: "",
+    position: { en: "", vi: "" },
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -27,7 +27,7 @@ function AdminPersonForm() {
       const res = await axios.get(`/api/persons/${id}`);
       setFormData({
         username: res.data.username || "",
-        position: res.data.position || "",
+        position: res.data.position || { en: "", vi: "" },
       });
     } catch (err) {
       console.error("Error loading person:", err);
@@ -37,9 +37,16 @@ function AdminPersonForm() {
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const handleChange = (e, field, lang = null) => {
+    const { value } = e.target;
+    if (lang) {
+      setFormData((prev) => ({
+        ...prev,
+        [field]: { ...prev[field], [lang]: value },
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, [field]: value }));
+    }
   };
 
   const handleSave = async (e) => {
@@ -48,10 +55,8 @@ function AdminPersonForm() {
 
     try {
       if (isEditMode) {
-        // PUT
         await axios.put(`/api/persons/${id}`, formData);
       } else {
-        // POST
         await axios.post("/api/persons", formData);
       }
       navigate("/admin/our-firm/persons");
@@ -84,14 +89,28 @@ function AdminPersonForm() {
         </div>
         <div>
           <label className="block text-sm font-medium mb-1">Position</label>
-          <input
-            type="text"
-            name="position"
-            className="w-full border p-2 rounded"
-            value={formData.position}
-            onChange={handleChange}
-            required
-          />
+          <div>
+            <label className="block text-sm font-medium">English</label>
+            <input
+              type="text"
+              placeholder="Position in English"
+              value={formData.position.en}
+              onChange={(e) => handleChange(e, "position", "en")}
+              className="w-full border p-2 rounded mb-2"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium">Vietnamese</label>
+            <input
+              type="text"
+              placeholder="Position in Vietnamese"
+              value={formData.position.vi}
+              onChange={(e) => handleChange(e, "position", "vi")}
+              className="w-full border p-2 rounded"
+              required
+            />
+          </div>
         </div>
 
         <button type="submit" className="px-3 py-1 bg-blue-600 text-white rounded">
