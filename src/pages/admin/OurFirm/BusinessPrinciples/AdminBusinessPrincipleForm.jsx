@@ -25,7 +25,7 @@ function AdminBusinessPrincipleForm() {
   const fetchDataById = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`/api/business-principles/${id}`);
+      const res = await axios.get(`https://thaiduong-be.onrender.com/api/business-principles/${id}`);
       setFormData({
         titles: res.data.titles || { en: "", vi: "" },
         descriptions: res.data.descriptions || { en: "", vi: "" },
@@ -52,9 +52,9 @@ function AdminBusinessPrincipleForm() {
 
     try {
       if (isEditMode) {
-        await axios.put(`/api/business-principles/${id}`, formData);
+        await axios.put(`https://thaiduong-be.onrender.com/api/business-principles/${id}`, formData);
       } else {
-        await axios.post("/api/business-principles", formData);
+        await axios.post("https://thaiduong-be.onrender.com/api/business-principles", formData);
       }
       navigate("/admin/our-firm/business-principles");
     } catch (err) {

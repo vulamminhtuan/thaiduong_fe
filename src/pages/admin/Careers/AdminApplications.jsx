@@ -15,7 +15,7 @@ function AdminApplications() {
   const fetchApplications = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("/api/applications");
+      const response = await axios.get("https://thaiduong-be.onrender.com/api/applications");
       setApplications(response.data);
       setError("");
     } catch (err) {
@@ -46,7 +46,7 @@ function AdminApplications() {
   
     setActionLoading(true);
     try {
-      await axios.put(`/api/applications/${application.id}/status`, {
+      await axios.put(`https://thaiduong-be.onrender.com/api/applications/${application.id}/status`, {
         status: actionType,
         message:
           actionType === "ACCEPTED"

@@ -24,7 +24,7 @@ function AdminPersonForm() {
   const fetchDataById = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`/api/persons/${id}`);
+      const res = await axios.get(`https://thaiduong-be.onrender.com/api/persons/${id}`);
       setFormData({
         username: res.data.username || "",
         position: res.data.position || { en: "", vi: "" },
@@ -55,9 +55,9 @@ function AdminPersonForm() {
 
     try {
       if (isEditMode) {
-        await axios.put(`/api/persons/${id}`, formData);
+        await axios.put(`https://thaiduong-be.onrender.com/api/persons/${id}`, formData);
       } else {
-        await axios.post("/api/persons", formData);
+        await axios.post("https://thaiduong-be.onrender.com/api/persons", formData);
       }
       navigate("/admin/our-firm/persons");
     } catch (err) {

@@ -10,7 +10,7 @@ function AdminContacts() {
   const fetchContacts = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("/api/contact/admin/list"); 
+      const res = await axios.get("https://thaiduong-be.onrender.com/api/contact/admin/list"); 
       setContacts(res.data || []);
     } catch (err) {
       console.error("Error:", err);

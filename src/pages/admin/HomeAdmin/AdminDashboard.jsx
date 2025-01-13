@@ -44,7 +44,7 @@ function AdminDashboard() {
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const response = await axios.get("/api/roles", {
+        const response = await axios.get("https://thaiduong-be.onrender.com/api/roles", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         setRoles(response.data);
@@ -61,10 +61,10 @@ function AdminDashboard() {
       try {
        
         const [newsRes, jobsRes, appsRes, contactsRes] = await Promise.all([
-          axios.get("/api/news"),
-          axios.get("/api/jobs"),
-          axios.get("/api/applications"),
-          axios.get("/api/contact/admin/list", {
+          axios.get("https://thaiduong-be.onrender.com/api/news"),
+          axios.get("https://thaiduong-be.onrender.com/api/jobs"),
+          axios.get("https://thaiduong-be.onrender.com/api/applications"),
+          axios.get("https://thaiduong-be.onrender.com/api/contact/admin/list", {
             headers: { Authorization: "Bearer " + localStorage.getItem("token") },
           }),
         ]);
@@ -95,7 +95,7 @@ function AdminDashboard() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("/api/users", {
+        const response = await axios.get("https://thaiduong-be.onrender.com/api/users", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -128,7 +128,7 @@ function AdminDashboard() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/users/${id}`, {
+      await axios.delete(`https://thaiduong-be.onrender.com/api/users/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -151,7 +151,7 @@ function AdminDashboard() {
     }
 
     try {
-      const response = await axios.put(`/api/users/${editFormData.id}`, updatedData, {
+      const response = await axios.put(`https://thaiduong-be.onrender.com/api/users/${editFormData.id}`, updatedData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

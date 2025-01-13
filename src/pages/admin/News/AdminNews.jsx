@@ -38,7 +38,7 @@ function AdminNews() {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get("/api/news?page=0&size=9999");
+      const response = await axios.get("https://thaiduong-be.onrender.com/api/news?page=0&size=9999");
       const data = Array.isArray(response.data.news) ? response.data.news : [];
       setItems(data);
     } catch (err) {
@@ -68,10 +68,10 @@ function AdminNews() {
       try {
         if (selectedIds.length === 1) {
           // Xóa một phần tử
-          await axios.delete(`/api/news/${selectedIds[0]}`);
+          await axios.delete(`https://thaiduong-be.onrender.com/api/news/${selectedIds[0]}`);
         } else {
           // Xóa nhiều phần tử
-          await axios.post("/api/news/delete-batch", { ids: selectedIds });
+          await axios.post("https://thaiduong-be.onrender.com/api/news/delete-batch", { ids: selectedIds });
         }
         fetchItems();
         setSelectedIds([]); // Reset danh sách được chọn
@@ -110,7 +110,7 @@ function AdminNews() {
         formData.append("image", form.imageFile);
   
         try {
-          const uploadResponse = await axios.post("/api/upload", formData, {
+          const uploadResponse = await axios.post("https://thaiduong-be.onrender.com/api/upload", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
@@ -134,9 +134,9 @@ function AdminNews() {
       };
   
       if (isEditing) {
-        await axios.put(`/api/news/${form.id}`, updatedForm);
+        await axios.put(`https://thaiduong-be.onrender.com/api/news/${form.id}`, updatedForm);
       } else {
-        await axios.post("/api/news", updatedForm);
+        await axios.post("https://thaiduong-be.onrender.com/api/news", updatedForm);
       }
   
       // Reset form và chuyển hướng
@@ -161,7 +161,7 @@ function AdminNews() {
   const handleDelete = async (id) => {
   if (window.confirm('Are you sure you want to delete this news?')) {
     try {
-      await axios.delete(`/api/news/${id}`);
+      await axios.delete(`https://thaiduong-be.onrender.com/api/news/${id}`);
       fetchItems();
     } catch (err) {
       console.error("Delete error:", err);

@@ -19,7 +19,7 @@ function Careers() {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await axios.get("/api/jobs", {
+        const response = await axios.get("https://thaiduong-be.onrender.com/api/jobs", {
           headers: {
             "Content-Type": "application/json",
           },

@@ -58,7 +58,7 @@ function NewItem() {
         formData.append('image', form.image);
       }
 
-      await axios.post(currentConfig.endpoint, formData, {
+      await axios.post(`https://thaiduong-be.onrender.com${currentConfig.endpoint}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

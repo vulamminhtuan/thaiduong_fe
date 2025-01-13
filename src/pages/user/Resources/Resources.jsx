@@ -47,7 +47,7 @@ const Resources = () => {
       const fetchNews = async () => {
         setLoading(true);
         try {
-          const response = await axios.get(`/api/news?page=${page}&size=6`);
+          const response = await axios.get(`https://thaiduong-be.onrender.com/api/news?page=${page}&size=6`);
           setNews(response.data.news || []);
           setTotalPages(response.data.totalPages || 1);
         } catch (err) {

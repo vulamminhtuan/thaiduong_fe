@@ -55,7 +55,7 @@ function ApplyJob() {
   
     try {
       // Gửi yêu cầu POST để apply
-      await axios.post(`/api/jobs/${id}/apply`, formData, {
+      await axios.post(`https://thaiduong-be.onrender.com/api/jobs/${id}/apply`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -85,7 +85,7 @@ function ApplyJob() {
 
   const handleVerifyCode = async () => {
     try {
-      await axios.post(`/api/jobs/${id}/verify-code`, {
+      await axios.post(`https://thaiduong-be.onrender.com/api/jobs/${id}/verify-code`, {
         email: form.email,
         code: verificationCode,
       });

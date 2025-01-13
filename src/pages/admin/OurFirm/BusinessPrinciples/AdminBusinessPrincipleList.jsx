@@ -18,7 +18,7 @@ function AdminBusinessPrincipleList() {
     setError(null);
     try {
       
-      const res = await axios.get("/api/business-principles");
+      const res = await axios.get("https://thaiduong-be.onrender.com/api/business-principles");
       setItems(res.data.content || []);
     } catch (err) {
       console.error("Error fetching BusinessPrinciples:", err);
@@ -31,7 +31,7 @@ function AdminBusinessPrincipleList() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this item?")) return;
     try {
-      await axios.delete(`/api/business-principles/${id}`);
+      await axios.delete(`https://thaiduong-be.onrender.com/api/business-principles/${id}`);
       setItems((prev) => prev.filter((bp) => bp.id !== id));
     } catch (err) {
       console.error("Delete error:", err);

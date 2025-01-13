@@ -22,10 +22,10 @@ function About() {
     const fetchData = async () => {
       try {
         const [overviewsRes, businessPrinciplesRes, personsRes, investorRelationsRes] = await Promise.all([
-          axios.get("/api/overviews"),
-          axios.get("/api/business-principles"),
-          axios.get("/api/persons"),
-          axios.get(`/api/investor-relations?page=${page}&size=4`),
+          axios.get("https://thaiduong-be.onrender.com/api/overviews"),
+          axios.get("https://thaiduong-be.onrender.com/api/business-principles"),
+          axios.get("https://thaiduong-be.onrender.com/api/persons"),
+          axios.get(`https://thaiduong-be.onrender.com/api/investor-relations?page=${page}&size=4`),
         ]);
 
         setOverviews(overviewsRes.data.content);

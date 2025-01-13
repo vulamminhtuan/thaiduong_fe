@@ -58,7 +58,7 @@ function Contact() {
 
     try {
       setIsSubmitting(true);
-      const response = await axios.post('/api/contact', formData, {
+      const response = await axios.post('https://thaiduong-be.onrender.com/api/contact', formData, {
         headers: {
           'Content-Type': 'application/json',
         },

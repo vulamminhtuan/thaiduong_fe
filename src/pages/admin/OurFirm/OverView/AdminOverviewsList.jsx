@@ -17,7 +17,7 @@ function AdminOverviewsList() {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get("/api/overviews");
+      const res = await axios.get("https://thaiduong-be.onrender.com/api/overviews");
       setOverviews(res.data.content || []);
     } catch (err) {
       console.error("Error fetching Overviews:", err);
@@ -30,7 +30,7 @@ function AdminOverviewsList() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this item?")) return;
     try {
-      await axios.delete(`/api/overviews/${id}`);
+      await axios.delete(`https://thaiduong-be.onrender.com/api/overviews/${id}`);
       setOverviews((prev) => prev.filter((ov) => ov.id !== id));
     } catch (err) {
       console.error("Delete error:", err);

@@ -37,7 +37,7 @@ function AdminCRUDPage({ title, apiEndpoint }) {
   const handleSave = async () => {
     try {
       if (isEditing) {
-        await axios.put(`${apiEndpoint}/${form.id}`, form);
+        await axios.put(`https://thaiduong-be.onrender.com${apiEndpoint}/${form.id}`, form);
       } else {
         await axios.post(apiEndpoint, form);
       }
@@ -56,7 +56,7 @@ function AdminCRUDPage({ title, apiEndpoint }) {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${apiEndpoint}/${id}`);
+      await axios.delete(`https://thaiduong-be.onrender.com${apiEndpoint}/${id}`);
       fetchItems();
     } catch (err) {
       setError("Error deleting data.");

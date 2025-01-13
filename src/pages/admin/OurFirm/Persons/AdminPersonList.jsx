@@ -17,7 +17,7 @@ function AdminPersonList() {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get("/api/persons");
+      const res = await axios.get("https://thaiduong-be.onrender.com/api/persons");
       setItems(res.data.content || []);
     } catch (err) {
       console.error("Error fetching Persons:", err);
@@ -30,7 +30,7 @@ function AdminPersonList() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this person?")) return;
     try {
-      await axios.delete(`/api/persons/${id}`);
+      await axios.delete(`https://thaiduong-be.onrender.com/api/persons/${id}`);
       setItems((prev) => prev.filter((p) => p.id !== id));
     } catch (err) {
       console.error("Delete error:", err);

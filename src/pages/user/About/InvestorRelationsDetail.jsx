@@ -28,7 +28,7 @@ function InvestorRelationsDetail() {
   useEffect(() => {
     const fetchDetail = async () => {
       try {
-        const response = await axios.get(`/api/investor-relations/${id}`);
+        const response = await axios.get(`https://thaiduong-be.onrender.com/api/investor-relations/${id}`);
         setDetailData(response.data);
       } catch (err) {
         setError(err);

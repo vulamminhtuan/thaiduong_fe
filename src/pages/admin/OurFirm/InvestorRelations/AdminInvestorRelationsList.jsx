@@ -17,7 +17,7 @@ function AdminInvestorRelationsList() {
     setLoading(true);
     setError(null);
     try {
-        const res = await axios.get("/api/investor-relations?page=0&size=9999");
+        const res = await axios.get("https://thaiduong-be.onrender.com/api/investor-relations?page=0&size=9999");
         setItems(res.data.content || []);
     } catch (err) {
       console.error("Error fetching InvestorRelations:", err);
@@ -30,7 +30,7 @@ function AdminInvestorRelationsList() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this item?")) return;
     try {
-      await axios.delete(`/api/investor-relations/${id}`);
+      await axios.delete(`https://thaiduong-be.onrender.com/api/investor-relations/${id}`);
       setItems((prev) => prev.filter((inv) => inv.id !== id));
     } catch (err) {
       console.error("Delete error:", err);

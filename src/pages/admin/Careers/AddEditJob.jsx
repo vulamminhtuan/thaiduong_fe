@@ -23,7 +23,7 @@ function AddEditJob({ mode }) {
 
   const fetchJob = async (jobId) => {
     try {
-      const response = await axios.get(`/api/jobs/${jobId}`);
+      const response = await axios.get(`https://thaiduong-be.onrender.com/api/jobs/${jobId}`);
       setForm(response.data);
     } catch (err) {
       setError("Error fetching job data.");
@@ -52,9 +52,9 @@ function AddEditJob({ mode }) {
     try {
       const payload = { ...form, requirements: form.requirements.filter(req => req.trim() !== "") }; 
       if (mode === "edit") {
-        await axios.put(`/api/jobs/${id}`, payload);
+        await axios.put(`https://thaiduong-be.onrender.com/api/jobs/${id}`, payload);
       } else {
-        await axios.post("/api/jobs", payload);
+        await axios.post("https://thaiduong-be.onrender.com/api/jobs", payload);
       }
       navigate("/admin/jobs");
     } catch (err) {

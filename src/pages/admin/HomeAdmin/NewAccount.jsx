@@ -15,7 +15,7 @@ function NewAccount() {
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const response = await axios.get("/api/roles", {
+        const response = await axios.get("https://thaiduong-be.onrender.com/api/roles", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -33,7 +33,7 @@ function NewAccount() {
     e.preventDefault();
     try {
       console.log("Form data:", formData); // Kiểm tra dữ liệu
-      await axios.post("/api/users", formData, {
+      await axios.post("https://thaiduong-be.onrender.com/api/users", formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

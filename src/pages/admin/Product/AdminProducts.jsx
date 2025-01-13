@@ -55,7 +55,7 @@ function AdminProducts() {
         const formData = new FormData();
         formData.append('image', form.image);
 
-        const uploadResponse = await axios.post('/api/upload', formData, {
+        const uploadResponse = await axios.post('https://thaiduong-be.onrender.com/api/upload', formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
 
@@ -70,9 +70,9 @@ function AdminProducts() {
       };
 
       if (isEditing) {
-        await axios.put(`${currentConfig.endpoint}/${editId}`, productData);
+        await axios.put(`https://thaiduong-be.onrender.com${currentConfig.endpoint}/${editId}`, productData);
       } else {
-        await axios.post(currentConfig.endpoint, productData);
+        await axios.post(`https://thaiduong-be.onrender.com${currentConfig.endpoint}`, productData);
       }
 
       await fetchData();
@@ -91,7 +91,7 @@ function AdminProducts() {
     if (!data) return;
 
     try {
-      await axios.delete(`${currentConfig.endpoint}/${data.id}`);
+      await axios.delete(`https://thaiduong-be.onrender.com${currentConfig.endpoint}/${data.id}`);
       setData(null);
       setShowConfirmation(false);
     } catch (err) {
@@ -167,7 +167,7 @@ function AdminProducts() {
           {data.imageURL && (
             <img
               // src={`${process.env.REACT_APP_API_URL || ''}${data.imageURL}`}
-              src={data.imageURL.startsWith("https") ? data.imageURL : `${process.env.BACKEND_URL}/api/images/${data.imageURL}`}
+              src={data.imageURL.startsWith("https") ? data.imageURL : `https://thaiduong-be.onrender.com/api/images/${data.imageURL}`}
               alt={data.title}
               className="w-72 h-48 object-cover rounded"
             />

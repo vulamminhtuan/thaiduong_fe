@@ -25,7 +25,7 @@ function AdminOverviewForm() {
   const fetchOverviewById = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`/api/overviews/${id}`);
+      const res = await axios.get(`https://thaiduong-be.onrender.com/api/overviews/${id}`);
       setFormData({
         content: res.data.content || { en: "", vi: "" },
       });
@@ -51,9 +51,9 @@ function AdminOverviewForm() {
 
     try {
       if (isEditMode) {
-        await axios.put(`/api/overviews/${id}`, formData);
+        await axios.put(`https://thaiduong-be.onrender.com/api/overviews/${id}`, formData);
       } else {
-        await axios.post("/api/overviews", formData);
+        await axios.post("https://thaiduong-be.onrender.com/api/overviews", formData);
       }
       navigate("/admin/our-firm/overviews");
     } catch (err) {

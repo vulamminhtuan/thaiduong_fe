@@ -17,7 +17,7 @@ function AdminCareers() {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get("/api/jobs");
+      const response = await axios.get("https://thaiduong-be.onrender.com/api/jobs");
       setJobs(response.data || []);
     } catch (err) {
       setError("Error loading jobs data.");
@@ -30,7 +30,7 @@ function AdminCareers() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this job?")) {
       try {
-        await axios.delete(`/api/jobs/${id}`);
+        await axios.delete(`https://thaiduong-be.onrender.com/api/jobs/${id}`);
         fetchJobs();
       } catch (err) {
         setError("Error deleting job.");

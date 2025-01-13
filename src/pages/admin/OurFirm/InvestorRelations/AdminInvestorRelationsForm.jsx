@@ -40,7 +40,7 @@ function AdminInvestorRelationsForm() {
   const fetchDataById = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`/api/investor-relations/${id}`);
+      const res = await axios.get(`https://thaiduong-be.onrender.com/api/investor-relations/${id}`);
       setFormData({
         title: {
           vi: res.data.titleVi || "", 
@@ -113,13 +113,13 @@ function AdminInvestorRelationsForm() {
       
       if (isEditMode) {
         console.log(insertData);
-        await axios.put(`/api/investor-relations/${id}`, insertData, {
+        await axios.put(`https://thaiduong-be.onrender.com/api/investor-relations/${id}`, insertData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       } else {
         console.log(insertData);
         
-        await axios.post("/api/investor-relations", insertData, {
+        await axios.post("https://thaiduong-be.onrender.com/api/investor-relations", insertData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       }
@@ -203,7 +203,7 @@ function AdminInvestorRelationsForm() {
           ) : formData.imageUrl && !imageFile ? (
             <div className="mt-2">
               <img
-                src={`/uploads/images/${formData.imageUrl}`}
+                src={`https://thaiduong-be.onrender.com/uploads/images/${formData.imageUrl}`}
                 alt="Current"
                 className="w-32 h-32 object-cover border"
               />
@@ -223,7 +223,7 @@ function AdminInvestorRelationsForm() {
           {formData.link && !linkFile ? (
             <div className="mt-2">
               <a
-                href={`/uploads/resumes/${formData.link}`}
+                href={`https://thaiduong-be.onrender.com/uploads/resumes/${formData.link}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline text-blue-600"
