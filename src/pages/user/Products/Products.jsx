@@ -34,7 +34,7 @@ function Products() {
       setLoading(true); // Bắt đầu quá trình tải dữ liệu
       try {
         const fetchPromises = productEndpoints.map(product =>
-          fetch(product.endpoint).then(res => {
+          fetch(`https://thaiduong-be.onrender.com${product.endpoint}`).then(res => {
             if (!res.ok) {
               throw new Error(`Failed to fetch ${product.title}`);
             }
