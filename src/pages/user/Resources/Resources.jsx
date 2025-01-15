@@ -254,12 +254,11 @@ const Resources = () => {
               src={
                 selectedArticle.imageUrl.startsWith("http")
                               ? selectedArticle.imageUrl
-                              : `${process.env.BACKEND_URL}/api/images/${selectedArticle.imageUrl}`
+                              : `https://thaiduong-be.onrender.com/api/images/${selectedArticle.imageUrl}`
                           }
                 alt={selectedArticle.title}
                 className="w-full h-auto rounded-md mb-4"
               />
-              <p className="text-gray-700 mb-4">{getLocalizedContent(selectedArticle.content)}</p>
               <p className="text-sm text-gray-500">
                 Ngày:{" "}
                 {selectedArticle.createdAt
@@ -270,6 +269,7 @@ const Resources = () => {
                     })
                   : "Không có ngày"}
               </p>
+              <p className="text-gray-700 mb-4">{getLocalizedContent(selectedArticle.content)}</p>
             </div>
           </div>
         </div>

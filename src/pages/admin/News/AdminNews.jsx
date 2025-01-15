@@ -130,8 +130,10 @@ function AdminNews() {
       const updatedForm = {
         ...form,
         imageUrl: imageUrl, // Sử dụng URL mới nếu có upload, giữ URL cũ nếu không
+     
         createdAt: form.createdAt || currentTimestamp,
       };
+ 
   
       if (isEditing) {
         await axios.put(`https://thaiduong-be.onrender.com/api/news/${form.id}`, updatedForm);
