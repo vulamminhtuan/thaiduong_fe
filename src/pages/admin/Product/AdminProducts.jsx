@@ -111,7 +111,7 @@ function AdminProducts() {
     if (item.imageURL) {
       const imageUrl = item.imageURL.startsWith("https") 
         ? item.imageURL 
-        : `https://thaiduong-be.onrender.com/api/images/${item.imageURL}`;
+        : item.imageURL;
       setImagePreview(imageUrl);
     }
   };
@@ -167,7 +167,7 @@ function AdminProducts() {
           {data.imageURL && (
             <img
               // src={`${process.env.REACT_APP_API_URL || ''}${data.imageURL}`}
-              src={data.imageURL.startsWith("https") ? data.imageURL : `https://thaiduong-be.onrender.com/api/images/${data.imageURL}`}
+              src={data.imageURL.startsWith("https") ? data.imageURL : data.imageURL}
               alt={data.title}
               className="w-72 h-48 object-cover rounded"
             />

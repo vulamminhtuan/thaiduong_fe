@@ -396,7 +396,7 @@ const handleEdit = (item) => {
                           src={
                             item.imageUrl.startsWith("http")
                               ? item.imageUrl
-                              : `https://thaiduong-be.onrender.com/api/images/${item.imageUrl}`
+                              : item.imageUrl
                           }
                           alt={item.title}
                         

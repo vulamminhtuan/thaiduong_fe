@@ -203,7 +203,7 @@ function AdminInvestorRelationsForm() {
           ) : formData.imageUrl && !imageFile ? (
             <div className="mt-2">
               <img
-                src={`https://thaiduong-be.onrender.com/uploads/images/${formData.imageUrl}`}
+                src={`${formData.imageUrl}`}
                 alt="Current"
                 className="w-32 h-32 object-cover border"
               />
@@ -223,7 +223,7 @@ function AdminInvestorRelationsForm() {
           {formData.link && !linkFile ? (
             <div className="mt-2">
               <a
-                href={`https://thaiduong-be.onrender.com/uploads/resumes/${formData.link}`}
+                href={`${formData.link}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline text-blue-600"

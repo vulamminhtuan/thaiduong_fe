@@ -81,7 +81,7 @@ function AdminInvestorRelationsList() {
                           src={
                             item.imageUrl.startsWith("http")
                               ? item.imageUrl
-                              : `https://thaiduong-be.onrender.com/api/images/${item.imageUrl}`
+                              : item.imageUrl
                           }
                           alt={item.title}
                         
@@ -94,9 +94,10 @@ function AdminInvestorRelationsList() {
               <td className="py-2 px-4 border-b">
                 {item.link ? (
                     <a
-                    href={`https://thaiduong-be.onrender.com/api/files/${item.link
-                          .split("\\")
-                          .pop()}`}
+                    // href={`https://thaiduong-be.onrender.com/api/files/${item.link
+                    //       .split("\\")
+                    //       .pop()}`}
+                          href={item.link}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="underline text-blue-600 hover:text-blue-800"
