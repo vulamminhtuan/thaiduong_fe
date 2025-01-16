@@ -173,7 +173,7 @@ function Products() {
                     <img
                       src={products[indexProduct].imageURL.startsWith('http')
                         ? products[indexProduct].imageURL
-                        :  `https://thaiduong-be.onrender.com/api/images/${products[indexProduct].imageURL}`} 
+                        :  products[indexProduct].imageURL} 
                       alt={t(`product ${indexProduct + 1}`)}
                       className="mt-2 w-full h-40 object-cover rounded"
                     />

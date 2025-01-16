@@ -169,7 +169,7 @@ const Resources = () => {
                             src={
                               article.imageUrl.startsWith("http")
                               ? article.imageUrl
-                              : `https://thaiduong-be.onrender.com/api/images/${article.imageUrl}`
+                              : article.imageUrl
                           }
                             alt={article.title}
                             className="w-full h-48 object-cover rounded-t-lg mb-4"
@@ -254,7 +254,7 @@ const Resources = () => {
               src={
                 selectedArticle.imageUrl.startsWith("http")
                               ? selectedArticle.imageUrl
-                              : `https://thaiduong-be.onrender.com/api/images/${selectedArticle.imageUrl}`
+                              : selectedArticle.imageUrl
                           }
                 alt={selectedArticle.title}
                 className="w-full h-auto rounded-md mb-4"
