@@ -34,7 +34,7 @@ function AdminProducts() {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get(currentConfig.endpoint);
+      const res = await axios.get(`https://thaiduong-be.onrender.com${currentConfig.endpoint}`);
       setData(res.data[0] || null);
     } catch (err) {
       setError(`Error: ${err.message}`);
